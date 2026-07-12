@@ -1,0 +1,10 @@
+{
+  "name": "elle-app-pilot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node tests/pilot.test.mjs",
+    "start": "python -m http.server 8000"
+  }
+}
