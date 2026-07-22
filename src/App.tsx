@@ -1,540 +1,512 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
+  Activity,
   ArrowRight,
-  BadgeCheck,
+  Award,
+  BookOpenCheck,
   Bot,
+  BrainCircuit,
   Building2,
-  CheckCircle2,
+  Calendar,
   ChevronRight,
+  ClipboardCheck,
   ExternalLink,
   GitBranch,
   GraduationCap,
   HeartPulse,
+  Hospital,
   Instagram,
   Mail,
-  Maximize2,
   Menu,
   MessageCircle,
   MonitorPlay,
   ShieldCheck,
   Sparkles,
+  Stethoscope,
+  Users,
   X,
+  Zap,
 } from "lucide-react";
 
-const LINKS = {
-  curso: "http://inscricoes.ufsc.br/cursosimulacao",
-  assistente: "https://interativa.agentesnasaude.com.br/",
-  emailProjeto: "mailto:simulacaointerativa@gmail.com",
-  emailCoord: "mailto:a.graziela@ufsc.br",
-  igProjeto: "https://instagram.com/simulacaointerativa",
-  igIana: "https://instagram.com/ianaenfermagem",
-};
+const ASSISTANT_URL = "https://interativa.agentesnasaude.com.br/";
+const COURSE_URL = "http://inscricoes.ufsc.br/cursosimulacao";
 
-const NAV = [
+const navLinks = [
   { label: "Início", href: "#inicio" },
   { label: "Sobre", href: "#sobre" },
   { label: "Curso", href: "#curso" },
-  { label: "Coordenação", href: "#coordenacao" },
+  { label: "Equipe", href: "#equipe" },
   { label: "Parcerias", href: "#parcerias" },
   { label: "Contato", href: "#contato" },
 ];
 
-const glass =
-  "bg-white/[0.04] backdrop-blur-xl border border-white/10 rounded-2xl";
-const glowHover =
-  "transition-all duration-300 hover:border-[#00F0FF]/40 hover:shadow-[0_0_45px_-12px_rgba(0,240,255,0.45)] hover:-translate-y-1";
+const stats = [
+  { icon: Calendar, value: "Desde 2020", label: "Pesquisa e desenvolvimento contínuo" },
+  { icon: Hospital, value: "UFSC + HU", label: "Departamento de Enfermagem e Hospital Universitário" },
+  { icon: GitBranch, value: "Cenários Ramificados", label: "Decisões clínicas com múltiplos desfechos" },
+  { icon: ShieldCheck, value: "Segurança do Paciente", label: "Foco central em todas as simulações" },
+];
 
-export default function InterAtivaLanding() {
-  const [menuOpen, setMenuOpen] = useState(false);
+const pillars = [
+  {
+    icon: MonitorPlay,
+    title: "Simulação Virtual Imersiva",
+    desc: "Ambientes clínicos digitais realistas que reproduzem situações do cuidado em saúde e enfermagem, sem risco ao paciente real.",
+  },
+  {
+    icon: GitBranch,
+    title: "Cenários Ramificados",
+    desc: "Cada decisão do estudante abre novos caminhos narrativos, promovendo raciocínio clínico, pensamento crítico e aprendizado ativo.",
+  },
+  {
+    icon: BrainCircuit,
+    title: "Agente Inteligente InterAtiva",
+    desc: "Assistente virtual que guia o aluno durante as simulações, oferecendo feedback contextual e suporte em tempo real.",
+  },
+  {
+    icon: ClipboardCheck,
+    title: "Protocolos de Segurança",
+    desc: "Conteúdo alinhado às metas internacionais de segurança do paciente e às boas práticas do cuidado em enfermagem.",
+  },
+];
+
+const partners = [
+  { name: "LAPETEC", desc: "Laboratório de Pesquisa em Tecnologia" },
+  { name: "GIATE", desc: "Grupo Interdisciplinar de Apoio à Telessaúde" },
+  { name: "UFSC", desc: "Universidade Federal de Santa Catarina" },
+  { name: "FAPESC", desc: "Fundação de Amparo à Pesquisa e Inovação de SC" },
+];
+
+export default function InterAtivaPage() {
   const [chatOpen, setChatOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = chatOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [chatOpen]);
 
   return (
     <div className="min-h-screen bg-[#03141A] text-slate-200 antialiased selection:bg-[#00F0FF]/30 selection:text-white">
       <style>{`
+        @keyframes float { 0%,100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+        @keyframes pulse-ring { 0% { transform: scale(1); opacity: .6; } 100% { transform: scale(1.9); opacity: 0; } }
+        @keyframes fade-up { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes gradient-shift { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+        @keyframes blink-dot { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+        .animate-float { animation: float 6s ease-in-out infinite; }
+        .animate-fade-up { animation: fade-up .8s ease-out both; }
+        .animate-gradient { background-size: 200% 200%; animation: gradient-shift 8s ease infinite; }
+        .pulse-ring::before { content: ""; position: absolute; inset: 0; border-radius: 9999px; background: rgba(0,240,255,.5); animation: pulse-ring 2s cubic-bezier(0,0,.2,1) infinite; }
+        .blink-dot { animation: blink-dot 1.6s ease-in-out infinite; }
+        .grid-bg { background-image: linear-gradient(rgba(0,240,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,255,.05) 1px, transparent 1px); background-size: 44px 44px; }
         html { scroll-behavior: smooth; }
-        @keyframes float { 0%,100% { transform: translateY(0px);} 50% { transform: translateY(-12px);} }
-        @keyframes floatSlow { 0%,100% { transform: translateY(0px);} 50% { transform: translateY(-8px);} }
-        .anim-float { animation: float 6s ease-in-out infinite; }
-        .anim-float-slow { animation: floatSlow 8s ease-in-out infinite; }
       `}</style>
 
-      {/* ===== Background FX ===== */}
-      <div className="pointer-events-none fixed inset-0 z-0">
-        <div
-          className="absolute inset-0 opacity-[0.06]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(0,240,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,255,0.6) 1px, transparent 1px)",
-            backgroundSize: "56px 56px",
-          }}
-        />
-        <div className="absolute -top-40 left-1/2 h-[520px] w-[820px] -translate-x-1/2 rounded-full bg-[#00F0FF]/10 blur-[140px]" />
-        <div className="absolute bottom-0 right-0 h-[420px] w-[520px] rounded-full bg-[#00FF66]/[0.07] blur-[140px]" />
-      </div>
-
-      {/* ===== Navbar ===== */}
-      <header className="fixed top-0 z-40 w-full border-b border-white/5 bg-[#03141A]/70 backdrop-blur-xl">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      {/* ══════════ NAVBAR ══════════ */}
+      <header
+        className={`fixed inset-x-0 top-0 z-40 transition-all duration-300 ${
+          scrolled
+            ? "border-b border-white/10 bg-[#03141A]/80 backdrop-blur-xl"
+            : "bg-transparent"
+        }`}
+      >
+        <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <a href="#inicio" className="group flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#00F0FF] to-[#00FF66] shadow-[0_0_20px_-4px_rgba(0,240,255,0.6)]">
-              <HeartPulse className="h-5 w-5 text-[#03141A]" strokeWidth={2.4} />
+            <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#00F0FF] to-[#00FF66] shadow-[0_0_24px_rgba(0,240,255,0.35)] transition-shadow group-hover:shadow-[0_0_36px_rgba(0,240,255,0.6)]">
+              <HeartPulse className="h-5 w-5 text-[#03141A]" strokeWidth={2.5} />
             </div>
             <div className="leading-tight">
-              <p className="text-sm font-bold tracking-wide text-white">
+              <span className="block text-sm font-bold tracking-wide text-white">
                 Inter<span className="text-[#00F0FF]">Ativa</span>
-              </p>
-              <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400">
+              </span>
+              <span className="block text-[10px] font-medium uppercase tracking-[0.2em] text-slate-400">
                 UFSC · FAPESC
-              </p>
+              </span>
             </div>
           </a>
 
-          <nav className="hidden items-center gap-1 lg:flex">
-            {NAV.map((item) => (
+          <div className="hidden items-center gap-1 lg:flex">
+            {navLinks.map((l) => (
               <a
-                key={item.href}
-                href={item.href}
-                className="rounded-lg px-3 py-2 text-sm text-slate-300 transition hover:bg-white/5 hover:text-[#00F0FF]"
+                key={l.href}
+                href={l.href}
+                className="rounded-lg px-3 py-2 text-sm font-medium text-slate-300 transition-colors hover:bg-white/5 hover:text-[#00F0FF]"
               >
-                {item.label}
+                {l.label}
               </a>
             ))}
+          </div>
+
+          <div className="hidden items-center gap-3 lg:flex">
+            <button
+              onClick={() => setChatOpen(true)}
+              className="group flex items-center gap-2 rounded-full border border-[#00F0FF]/40 bg-[#00F0FF]/10 px-4 py-2 text-sm font-semibold text-[#00F0FF] transition-all hover:border-[#00F0FF] hover:bg-[#00F0FF]/20 hover:shadow-[0_0_28px_rgba(0,240,255,0.4)]"
+            >
+              <Bot className="h-4 w-4" />
+              Falar com a InterAtiva
+            </button>
             <a
-              href={LINKS.curso}
+              href={COURSE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-3 inline-flex items-center gap-2 rounded-xl bg-[#00FF66] px-4 py-2 text-sm font-semibold text-[#03141A] shadow-[0_0_25px_-6px_rgba(0,255,102,0.7)] transition hover:brightness-110"
+              className="flex items-center gap-2 rounded-full bg-[#00FF66] px-4 py-2 text-sm font-bold text-[#03141A] transition-all hover:shadow-[0_0_28px_rgba(0,255,102,0.45)]"
             >
               Inscreva-se
               <ArrowRight className="h-4 w-4" />
             </a>
-          </nav>
+          </div>
 
           <button
-            onClick={() => setMenuOpen((v) => !v)}
-            className="rounded-lg border border-white/10 p-2 text-slate-300 lg:hidden"
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="rounded-lg p-2 text-slate-300 hover:bg-white/5 lg:hidden"
             aria-label="Abrir menu"
           >
-            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {menuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </button>
-        </div>
+        </nav>
 
         {menuOpen && (
-          <div className="border-t border-white/5 bg-[#0B2028]/95 backdrop-blur-xl lg:hidden">
+          <div className="border-t border-white/10 bg-[#03141A]/95 backdrop-blur-xl lg:hidden">
             <div className="space-y-1 px-4 py-4">
-              {NAV.map((item) => (
+              {navLinks.map((l) => (
                 <a
-                  key={item.href}
-                  href={item.href}
+                  key={l.href}
+                  href={l.href}
                   onClick={() => setMenuOpen(false)}
-                  className="block rounded-lg px-3 py-2 text-sm text-slate-300 hover:bg-white/5 hover:text-[#00F0FF]"
+                  className="block rounded-lg px-3 py-2.5 text-sm font-medium text-slate-300 hover:bg-white/5 hover:text-[#00F0FF]"
                 >
-                  {item.label}
+                  {l.label}
                 </a>
               ))}
-              <a
-                href={LINKS.curso}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 flex items-center justify-center gap-2 rounded-xl bg-[#00FF66] px-4 py-2.5 text-sm font-semibold text-[#03141A]"
-              >
-                Inscreva-se no Curso
-                <ArrowRight className="h-4 w-4" />
-              </a>
+              <div className="flex flex-col gap-2 pt-3">
+                <button
+                  onClick={() => {
+                    setMenuOpen(false);
+                    setChatOpen(true);
+                  }}
+                  className="flex items-center justify-center gap-2 rounded-full border border-[#00F0FF]/40 bg-[#00F0FF]/10 px-4 py-2.5 text-sm font-semibold text-[#00F0FF]"
+                >
+                  <Bot className="h-4 w-4" />
+                  Falar com a InterAtiva
+                </button>
+                <a
+                  href={COURSE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 rounded-full bg-[#00FF66] px-4 py-2.5 text-sm font-bold text-[#03141A]"
+                >
+                  Inscreva-se no Curso
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
             </div>
           </div>
         )}
       </header>
 
-      <main className="relative z-10">
-        {/* ===== Hero ===== */}
-        <section id="inicio" className="mx-auto max-w-7xl px-4 pt-32 pb-20 sm:px-6 lg:px-8 lg:pt-40">
-          <div className="grid items-center gap-14 lg:grid-cols-2">
-            <div>
-              <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#00F0FF]/25 bg-[#00F0FF]/[0.06] px-4 py-1.5 text-xs font-medium tracking-wide text-[#00F0FF]">
-                <Sparkles className="h-3.5 w-3.5" />
-                Desde 2020 · Departamento de Enfermagem UFSC + Hospital Universitário
-              </div>
+      {/* ══════════ HERO ══════════ */}
+      <section id="inicio" className="relative overflow-hidden pt-16">
+        <div className="grid-bg absolute inset-0" />
+        <div className="pointer-events-none absolute -top-40 left-1/2 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-[#00F0FF]/10 blur-[140px]" />
+        <div className="pointer-events-none absolute top-1/3 -right-40 h-[400px] w-[400px] rounded-full bg-[#00FF66]/10 blur-[120px]" />
 
-              <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-[3.4rem]">
-                Simulação Virtual{" "}
-                <span className="bg-gradient-to-r from-[#00F0FF] to-[#00FF66] bg-clip-text text-transparent">
-                  Interativa
-                </span>{" "}
-                para a Segurança do Paciente
-              </h1>
-
-              <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-400 sm:text-lg">
-                O <strong className="text-slate-200">Projeto InterAtiva</strong> promove a
-                segurança do paciente no cuidado em saúde e enfermagem por meio de
-                cenários virtuais ramificados, tecnologia educacional e uma agente
-                inteligente que guia cada decisão clínica.
-              </p>
-
-              <div className="mt-8 flex flex-wrap items-center gap-4">
-                <a
-                  href={LINKS.curso}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-2 rounded-xl bg-[#00FF66] px-6 py-3.5 text-sm font-bold text-[#03141A] shadow-[0_0_35px_-8px_rgba(0,255,102,0.8)] transition hover:brightness-110 hover:shadow-[0_0_45px_-6px_rgba(0,255,102,0.9)]"
-                >
-                  <GraduationCap className="h-5 w-5" />
-                  Inscreva-se no Curso
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-                </a>
-                <button
-                  onClick={() => setChatOpen(true)}
-                  className="inline-flex items-center gap-2 rounded-xl border border-[#00F0FF]/40 bg-[#00F0FF]/[0.06] px-6 py-3.5 text-sm font-semibold text-[#00F0FF] transition hover:bg-[#00F0FF]/15 hover:shadow-[0_0_35px_-10px_rgba(0,240,255,0.7)]"
-                >
-                  <Bot className="h-5 w-5" />
-                  Falar com a InterAtiva
-                </button>
-              </div>
-
-              {/* Stats */}
-              <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4">
-                {[
-                  { value: "2020", label: "Ano de início" },
-                  { value: "02", label: "Frentes UFSC · PEN + HU" },
-                  { value: "04", label: "Parceiros institucionais" },
-                  { value: "01", label: "Agente inteligente" },
-                ].map((s) => (
-                  <div key={s.label} className={`${glass} ${glowHover} p-4`}>
-                    <p className="bg-gradient-to-r from-[#00F0FF] to-[#00FF66] bg-clip-text text-2xl font-extrabold text-transparent">
-                      {s.value}
-                    </p>
-                    <p className="mt-1 text-[11px] leading-snug text-slate-400">{s.label}</p>
-                  </div>
-                ))}
-              </div>
+        <div className="relative mx-auto grid max-w-7xl items-center gap-12 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:gap-16 lg:px-8 lg:py-28">
+          {/* Texto */}
+          <div className="animate-fade-up">
+            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-[#00F0FF]/30 bg-[#0B2028]/70 px-4 py-1.5 backdrop-blur-md">
+              <Sparkles className="h-3.5 w-3.5 text-[#00F0FF]" />
+              <span className="text-xs font-semibold tracking-wide text-[#00F0FF]">
+                Apoiado pela FAPESC · Desenvolvido desde 2020
+              </span>
             </div>
 
-            {/* Hero visual */}
-            <div className="relative">
-              <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-tr from-[#00F0FF]/15 via-transparent to-[#00FF66]/15 blur-2xl" />
-              <div className={`${glass} relative overflow-hidden p-2 shadow-[0_0_60px_-20px_rgba(0,240,255,0.5)]`}>
-                <img
-                  src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=1200&auto=format&fit=crop"
-                  alt="Profissional de saúde utilizando tecnologia em simulação clínica"
-                  className="h-[420px] w-full rounded-xl object-cover"
-                />
-                <div className="absolute inset-2 rounded-xl bg-gradient-to-t from-[#03141A]/90 via-transparent to-transparent" />
-                <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
-                  <div>
-                    <p className="text-xs uppercase tracking-[0.25em] text-[#00F0FF]">Projeto InterAtiva</p>
-                    <p className="mt-1 text-lg font-bold text-white">Cenários Ramificados em Saúde</p>
-                  </div>
-                  <BadgeCheck className="h-8 w-8 text-[#00FF66]" />
-                </div>
-              </div>
+            <h1 className="text-4xl font-extrabold leading-[1.1] tracking-tight text-white sm:text-5xl lg:text-[3.4rem]">
+              Simulação Virtual{" "}
+              <span className="animate-gradient bg-gradient-to-r from-[#00F0FF] via-[#00FF66] to-[#00F0FF] bg-clip-text text-transparent">
+                Interativa
+              </span>{" "}
+              para a Segurança do Paciente
+            </h1>
 
-              {/* Floating cards */}
-              <div className={`${glass} anim-float absolute -left-6 top-8 hidden items-center gap-3 px-4 py-3 sm:flex`}>
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#00FF66]/15">
-                  <ShieldCheck className="h-5 w-5 text-[#00FF66]" />
-                </div>
-                <div className="text-xs">
-                  <p className="font-semibold text-white">Segurança do Paciente</p>
-                  <p className="text-slate-400">Decisões clínicas seguras</p>
-                </div>
-              </div>
-              <div className={`${glass} anim-float-slow absolute -right-4 bottom-24 hidden items-center gap-3 px-4 py-3 sm:flex`}>
-                <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#00F0FF]/15">
-                  <GitBranch className="h-5 w-5 text-[#00F0FF]" />
-                </div>
-                <div className="text-xs">
-                  <p className="font-semibold text-white">Cenários Ramificados</p>
-                  <p className="text-slate-400">Múltiplos desfechos</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== Sobre ===== */}
-        <section id="sobre" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="mb-12 max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#00F0FF]">Sobre o projeto</p>
-            <h2 className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">
-              Educação imersiva a serviço do cuidado seguro
-            </h2>
-            <p className="mt-4 text-slate-400">
-              Desenvolvido no Departamento de Enfermagem da UFSC em parceria com o
-              Hospital Universitário, com apoio da FAPESC, o InterAtiva une pesquisa,
-              ensino e tecnologia para transformar a formação em saúde.
+            <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-400 sm:text-lg">
+              O <strong className="font-semibold text-slate-200">Projeto InterAtiva</strong> promove
+              a segurança do paciente no cuidado em saúde e enfermagem por meio de cenários
+              ramificados imersivos — desenvolvido no Departamento de Enfermagem da{" "}
+              <strong className="font-semibold text-slate-200">UFSC</strong> e no{" "}
+              <strong className="font-semibold text-slate-200">Hospital Universitário</strong>.
             </p>
-          </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
-            {[
-              {
-                icon: ShieldCheck,
-                color: "#00FF66",
-                title: "Segurança do Paciente",
-                desc: "Treinamento de tomada de decisão em ambiente virtual seguro, sem riscos ao paciente real, fortalecendo a cultura de segurança.",
-              },
-              {
-                icon: GitBranch,
-                color: "#00F0FF",
-                title: "Cenários Ramificados",
-                desc: "Cada escolha abre novos caminhos narrativos: o estudante vivencia consequências realistas e múltiplos desfechos clínicos.",
-              },
-              {
-                icon: MonitorPlay,
-                color: "#00FF66",
-                title: "Tecnologia Educacional",
-                desc: "Plataforma digital com agente inteligente InterAtiva, que orienta as simulações e personaliza a experiência de aprendizagem.",
-              },
-            ].map((c) => (
-              <article key={c.title} className={`${glass} ${glowHover} group p-7`}>
-                <div
-                  className="mb-5 flex h-12 w-12 items-center justify-center rounded-xl transition group-hover:scale-110"
-                  style={{ backgroundColor: `${c.color}1f` }}
-                >
-                  <c.icon className="h-6 w-6" style={{ color: c.color }} />
-                </div>
-                <h3 className="text-lg font-bold text-white">{c.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-slate-400">{c.desc}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        {/* ===== Curso em destaque ===== */}
-        <section id="curso" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-3xl border border-[#00F0FF]/20 bg-gradient-to-br from-[#0B2028] via-[#0B2028]/80 to-[#03141A] p-1">
-            <div className="absolute -top-24 right-0 h-72 w-72 rounded-full bg-[#00F0FF]/15 blur-[100px]" />
-            <div className="absolute -bottom-24 left-0 h-72 w-72 rounded-full bg-[#00FF66]/10 blur-[100px]" />
-
-            <div className="relative grid items-center gap-10 p-8 sm:p-12 lg:grid-cols-2">
-              <div>
-                <span className="inline-flex items-center gap-2 rounded-full bg-[#00FF66]/15 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#00FF66]">
-                  <span className="relative flex h-2 w-2">
-                    <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#00FF66] opacity-75" />
-                    <span className="relative inline-flex h-2 w-2 rounded-full bg-[#00FF66]" />
-                  </span>
-                  Inscrições abertas
-                </span>
-
-                <h2 className="mt-5 text-3xl font-extrabold leading-tight text-white sm:text-4xl">
-                  Curso de Simulação Virtual em{" "}
-                  <span className="text-[#00F0FF]">Cenários Ramificados</span>
-                </h2>
-
-                <p className="mt-4 text-slate-400">
-                  Formação voltada a estudantes e profissionais da saúde e enfermagem,
-                  com casos clínicos interativos conduzidos pela agente InterAtiva.
-                </p>
-
-                <ul className="mt-6 space-y-3">
-                  {[
-                    "Casos clínicos com múltiplos desfechos",
-                    "Foco em segurança do paciente",
-                    "Mediação pela agente inteligente InterAtiva",
-                    "Certificação pela UFSC",
-                  ].map((item) => (
-                    <li key={item} className="flex items-start gap-3 text-sm text-slate-300">
-                      <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#00FF66]" />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-
-                <a
-                  href={LINKS.curso}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group mt-8 inline-flex items-center gap-2 rounded-xl bg-[#00FF66] px-7 py-3.5 text-sm font-bold text-[#03141A] shadow-[0_0_35px_-8px_rgba(0,255,102,0.8)] transition hover:brightness-110"
-                >
-                  Garantir minha vaga
-                  <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </a>
-                <p className="mt-3 text-xs text-slate-500">
-                  inscricoes.ufsc.br/cursosimulacao
-                </p>
-              </div>
-
-              <div className="relative">
-                <div className={`${glass} overflow-hidden p-2`}>
-                  <img
-                    src="https://images.unsplash.com/photo-1551601651-2a8555f1a136?q=80&w=1200&auto=format&fit=crop"
-                    alt="Equipe de saúde em treinamento de simulação"
-                    className="h-80 w-full rounded-xl object-cover"
-                  />
-                  <div className="absolute inset-2 rounded-xl bg-gradient-to-t from-[#03141A]/80 to-transparent" />
-                  <div className="absolute bottom-6 left-6 flex items-center gap-2 rounded-lg bg-[#03141A]/80 px-3 py-2 backdrop-blur">
-                    <Bot className="h-4 w-4 text-[#00F0FF]" />
-                    <span className="text-xs font-medium text-white">
-                      Simulações guiadas por IA
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== Coordenação ===== */}
-        <section id="coordenacao" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="grid items-center gap-10 lg:grid-cols-[1fr_1.2fr]">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#00F0FF]">Coordenação</p>
-              <h2 className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">
-                Liderança científica e acadêmica
-              </h2>
-              <p className="mt-4 text-slate-400">
-                O projeto é coordenado pela Profa. Dra. Ana Graziela Alvarez, do
-                Departamento de Enfermagem da UFSC, articulando pesquisa, extensão e
-                inovação tecnológica no Hospital Universitário.
-              </p>
-            </div>
-
-            <div className={`${glass} ${glowHover} flex flex-col gap-6 p-8 sm:flex-row sm:items-center`}>
-              <div className="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#00F0FF] to-[#00FF66] text-3xl font-extrabold text-[#03141A] shadow-[0_0_30px_-8px_rgba(0,240,255,0.7)]">
-                AG
-              </div>
-              <div className="flex-1">
-                <h3 className="text-xl font-bold text-white">Profa. Dra. Ana Graziela Alvarez</h3>
-                <p className="mt-1 text-sm text-[#00F0FF]">Coordenadora do Projeto InterAtiva</p>
-                <p className="mt-2 text-sm text-slate-400">
-                  Departamento de Enfermagem · Universidade Federal de Santa Catarina
-                </p>
-                <a
-
-                <a
-                  href={LINKS.emailCoord}
-                  className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[#00F0FF]/30 bg-[#00F0FF]/[0.06] px-4 py-2 text-xs font-semibold text-[#00F0FF] transition hover:bg-[#00F0FF]/15"
-                >
-                  <Mail className="h-4 w-4" />
-                  a.graziela@ufsc.br
-                </a>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ===== Parcerias ===== */}
-        <section id="parcerias" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#00F0FF]">Nossas Parcerias</p>
-            <h2 className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">Instituições e Apoio</h2>
-            <p className="mt-4 text-slate-400">
-              Trabalhamos em conjunto com entidades de referência no ensino e fomento científico para consolidar simulações que transformam a saúde.
-            </p>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center">
-            {[
-              { name: "UFSC", label: "Universidade Federal de Santa Catarina" },
-              { name: "PEN/UFSC", label: "Programa de Pós-Graduação em Enfermagem" },
-              { name: "Hospital Universitário", label: "HU / UFSC" },
-              { name: "FAPESC", label: "Fomento à Pesquisa e Inovação SC" }
-            ].map((p) => (
-              <div key={p.name} className={`${glass} p-8 flex flex-col items-center justify-center text-center h-40`}>
-                <Building2 className="h-10 w-10 text-[#00F0FF]/80 mb-3" />
-                <span className="font-bold text-white tracking-wide">{p.name}</span>
-                <span className="text-[10px] text-slate-400 mt-1">{p.label}</span>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* ===== Contato ===== */}
-        <section id="contato" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 border-t border-white/5">
-          <div className="grid gap-12 lg:grid-cols-2">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#00F0FF]">Fale Conosco</p>
-              <h2 className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">Entre em contato com nossa equipe</h2>
-              <p className="mt-4 text-slate-400">
-                Tem dúvidas sobre o projeto, interesse em implantar as simulações ou sugestões? Nossa coordenação e suporte estão prontos para atender.
-              </p>
-              <div className="mt-8 space-y-4">
-                <a href={LINKS.emailProjeto} className="flex items-center gap-3 text-slate-300 hover:text-[#00F0FF] transition">
-                  <Mail className="h-5 w-5 text-[#00FF66]" />
-                  <span>simulacaointerativa@gmail.com</span>
-                </a>
-                <a href={LINKS.igProjeto} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-slate-300 hover:text-[#00F0FF] transition">
-                  <Instagram className="h-5 w-5 text-[#00F0FF]" />
-                  <span>@simulacaointerativa</span>
-                </a>
-              </div>
-            </div>
-            <div className={`${glass} p-8`}>
-              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase mb-2">Seu Nome</label>
-                  <input type="text" className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00F0FF]/50" placeholder="Nome completo" />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase mb-2">Seu E-mail</label>
-                  <input type="email" className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00F0FF]/50" placeholder="seuemail@exemplo.com" />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-slate-400 uppercase mb-2">Mensagem</label>
-                  <textarea rows={4} className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00F0FF]/50" placeholder="Sua mensagem..." />
-                </div>
-                <button type="submit" className="w-full bg-gradient-to-r from-[#00F0FF] to-[#00FF66] text-[#03141A] font-bold py-3.5 rounded-xl shadow-lg hover:brightness-110 transition">
-                  Enviar Mensagem
-                </button>
-              </form>
-            </div>
-          </div>
-        </section>
-      </main>
-
-      {/* ===== Footer ===== */}
-      <footer className="border-t border-white/5 bg-[#020e12] py-12 text-slate-400">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div>
-            <p className="text-sm font-bold text-white tracking-wide">Inter<span className="text-[#00F0FF]">Ativa</span></p>
-            <p className="text-xs text-slate-500 mt-1">© 2026 Projeto InterAtiva UFSC. Todos os direitos reservados.</p>
-          </div>
-          <div className="flex gap-4">
-            <a href={LINKS.igProjeto} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition">
-              <Instagram className="h-5 w-5" />
-            </a>
-          </div>
-        </div>
-      </footer>
-
-      {/* ===== Floating Assistant Button ===== */}
-      <div className="fixed bottom-6 right-6 z-50">
-        {!chatOpen ? (
-          <button
-            onClick={() => setChatOpen(true)}
-            className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#00F0FF] to-[#00FF66] text-[#03141A] shadow-[0_0_30px_rgba(0,240,255,0.4)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_40px_rgba(0,240,255,0.6)]"
-            aria-label="Falar com a assistente"
-          >
-            <Bot className="h-6 w-6 animate-pulse" />
-          </button>
-        ) : (
-          <div className="relative flex h-[550px] w-[400px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0B2028]/95 shadow-[0_0_50px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all duration-300">
-            {/* Header */}
-            <div className="flex items-center justify-between border-b border-white/5 bg-[#03141A]/50 px-4 py-3">
-              <div className="flex items-center gap-2">
-                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#00F0FF]/15">
-                  <Bot className="h-5 w-5 text-[#00F0FF]" />
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-white">Assistente InterAtiva 2.0</p>
-                  <p className="text-[9px] uppercase tracking-wider text-[#00FF66]">Online</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setChatOpen(false)}
-                className="rounded-lg p-1 text-slate-400 hover:bg-white/5 hover:text-white"
+            <div className="mt-8 flex flex-wrap items-center gap-4">
+              <a
+                href={COURSE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex items-center gap-2 rounded-full bg-[#00FF66] px-7 py-3.5 text-sm font-bold text-[#03141A] transition-all hover:scale-[1.03] hover:shadow-[0_0_40px_rgba(0,255,102,0.5)]"
               >
-                <X className="h-4 w-4" />
+                <GraduationCap className="h-5 w-5" />
+                Conhecer o Curso
+                <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </a>
+              <button
+                onClick={() => setChatOpen(true)}
+                className="group flex items-center gap-2 rounded-full border border-[#00F0FF]/40 bg-[#00F0FF]/5 px-7 py-3.5 text-sm font-semibold text-[#00F0FF] backdrop-blur-md transition-all hover:border-[#00F0FF] hover:bg-[#00F0FF]/15 hover:shadow-[0_0_36px_rgba(0,240,255,0.35)]"
+              >
+                <MessageCircle className="h-5 w-5" />
+                Simular com a InterAtiva
               </button>
             </div>
-            {/* Iframe */}
-            <iframe
-              src={LINKS.assistente}
-              className="w-full flex-1 border-none bg-transparent"
-              title="Chat InterAtiva"
-            />
+
+            <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-xs text-slate-500">
+              <span className="flex items-center gap-1.5">
+                <Building2 className="h-4 w-4 text-[#00F0FF]" /> UFSC
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Hospital className="h-4 w-4 text-[#00F0FF]" /> Hospital Universitário
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Award className="h-4 w-4 text-[#00FF66]" /> Fomento FAPESC
+              </span>
+            </div>
           </div>
-        )}
-      </div>
-    </div>
-  );
-}
+
+          {/* Visual — Painel de simulação */}
+          <div className="animate-fade-up animate-float relative" style={{ animationDelay: "0.15s" }}>
+            <div className="relative overflow-hidden rounded-3xl border border-white/10 bg-[#0B2028]/70 shadow-[0_30px_80px_rgba(0,0,0,0.5)] backdrop-blur-xl">
+              <div className="flex items-center justify-between border-b border-white/10 px-5 py-3.5">
+                <div className="flex items-center gap-2">
+                  <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-yellow-400/70" />
+                  <span className="h-2.5 w-2.5 rounded-full bg-[#00FF66]/80" />
+                </div>
+                <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-slate-500">
+                  Simulação · Cenário 01
+                </span>
+              </div>
+
+              <div className="space-y-5 p-6">
+                <div className="flex items-start gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#00F0FF] to-[#00FF66]">
+                    <Stethoscope className="h-5 w-5 text-[#03141A]" />
+                  </div>
+                  <div className="rounded-2xl rounded-tl-sm border border-white/10 bg-white/5 p-4">
+                    <p className="text-sm leading-relaxed text-slate-300">
+                      Paciente internado apresenta alergia medicamentosa registrada. Qual a sua
+                      conduta antes da administração da medicação prescrita?
+                    </p>
+                  </div>
+                </div>
+
+                <div className="space-y-2.5 pl-13">
+                  {[
+                    { t: "Checar identificação e pulseira de alergia", active: true },
+                    { t: "Administrar a medicação imediatamente", active: false },
+                    { t: "Aguardar nova prescrição sem agir", active: false },
+                  ].map((o, i) => (
+                    <div
+                      key={i}
+                      className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-sm transition-all ${
+                        o.active
+                          ? "border-[#00F0FF]/50 bg-[#00F0FF]/10 text-white shadow-[0_0_24px_rgba(0,240,255,0.15)]"
+                          : "border-white/10 bg-white/[0.03] text-slate-400 hover:border-[#00F0FF]/30 hover:text-slate-200"
+                      }`}
+                    >
+                      <span
+                        className={`flex h-5 w-5 items-center justify-center rounded-full border text-[10px] font-bold ${
+                          o.active
+                            ? "border-[#00F0FF] bg-[#00F0FF] text-[#03141A]"
+                            : "border-slate-600 text-slate-500"
+                        }`}
+                      >
+                        {String.fromCharCode(65 + i)}
+                      </span>
+                      {o.t}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex items-center justify-between rounded-xl border border-[#00FF66]/20 bg-[#00FF66]/5 px-4 py-3">
+                  <div className="flex items-center gap-2 text-xs text-slate-400">
+                    <Activity className="h-4 w-4 text-[#00FF66]" />
+                    Ramificação desbloqueada · feedback em tempo real
+                  </div>
+                  <span className="flex items-center gap-1.5 text-xs font-semibold text-[#00FF66]">
+                    <span className="blink-dot h-1.5 w-1.5 rounded-full bg-[#00FF66]" />
+                    InterAtiva online
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="absolute -bottom-5 -left-5 hidden rounded-2xl border border-white/10 bg-[#0B2028]/90 px-5 py-4 shadow-2xl backdrop-blur-xl sm:block">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#00FF66]/15">
+                  <ShieldCheck className="h-5 w-5 text-[#00FF66]" />
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-white">Segurança do Paciente</p>
+                  <p className="text-xs text-slate-500">Metas internacionais aplicadas</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════ STATS ══════════ */}
+      <section className="relative border-y border-white/5 bg-[#0B2028]/40">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4">
+          {stats.map((s, i) => (
+            <div
+              key={i}
+              className="group flex items-start gap-4 px-6 py-8 transition-colors hover:bg-[#00F0FF]/5 lg:px-8"
+            >
+              <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-[#00F0FF]/20 bg-[#00F0FF]/10 transition-all group-hover:border-[#00F0FF]/60 group-hover:shadow-[0_0_20px_rgba(0,240,255,0.3)]">
+                <s.icon className="h-5 w-5 text-[#00F0FF]" />
+              </div>
+              <div>
+                <p className="text-base font-bold text-white">{s.value}</p>
+                <p className="mt-1 text-xs leading-relaxed text-slate-500">{s.label}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ══════════ SOBRE / PILARES ══════════ */}
+      <section id="sobre" className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
+        <div className="mx-auto max-w-3xl text-center">
+          <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#00FF66]">
+            Sobre o Projeto
+          </span>
+          <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+            Tecnologia, educação e cuidado seguro{" "}
+            <span className="text-[#00F0FF]">em um só ecossistema</span>
+          </h2>
+          <p className="mt-5 text-base leading-relaxed text-slate-400">
+            Desde 2020, o Projeto InterAtiva une pesquisa científica e inovação tecnológica para
+            transformar a formação em saúde e enfermagem, colocando a segurança do paciente no
+            centro da experiência de aprendizagem.
+          </p>
+        </div>
+
+        <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {pillars.map((p, i) => (
+            <div
+              key={i}
+              className="group relative overflow-hidden rounded-2xl border border-white/10 bg-[#0B2028]/60 p-6 backdrop-blur-md transition-all duration-300 hover:-translate-y-1.5 hover:border-[#00F0FF]/50 hover:shadow-[0_0_40px_rgba(0,240,255,0.18)]"
+            >
+              <div className="pointer-events-none absolute -right-10 -top-10 h-28 w-28 rounded-full bg-[#00F0FF]/10 blur-2xl opacity-0 transition-opacity group-hover:opacity-100" />
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl border border-[#00F0FF]/20 bg-gradient-to-br from-[#00F0FF]/15 to-[#00FF66]/10 transition-all group-hover:border-[#00F0FF]/60">
+                <p.icon className="h-6 w-6 text-[#00F0FF]" />
+              </div>
+              <h3 className="mt-5 text-lg font-bold text-white">{p.title}</h3>
+              <p className="mt-2.5 text-sm leading-relaxed text-slate-400">{p.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ══════════ CURSO DESTAQUE ══════════ */}
+      <section id="curso" className="relative px-4 py-20 sm:px-6 lg:px-8">
+        <div className="pointer-events-none absolute left-1/2 top-1/2 h-[400px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#00FF66]/[0.06] blur-[120px]" />
+        <div className="relative mx-auto max-w-6xl overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-[#0B2028] via-[#0B2028]/80 to-[#03141A] shadow-[0_30px_90px_rgba(0,0,0,0.5)] backdrop-blur-xl">
+          <div className="grid lg:grid-cols-5">
+            <div className="relative p-8 sm:p-12 lg:col-span-3">
+              <div className="inline-flex items-center gap-2 rounded-full border border-[#00FF66]/30 bg-[#00FF66]/10 px-4 py-1.5">
+                <Zap className="h-3.5 w-3.5 text-[#00FF66]" />
+                <span className="text-xs font-bold uppercase tracking-wider text-[#00FF66]">
+                  Inscrições Abertas
+                </span>
+              </div>
+              <h2 className="mt-6 text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">
+                Curso de Simulação Virtual em{" "}
+                <span className="text-[#00F0FF]">Cenários Ramificados</span>
+              </h2>
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-slate-400">
+                Aprenda a tomar decisões clínicas seguras em ambientes virtuais que reagem às suas
+                escolhas. Ideal para estudantes e profissionais de saúde e enfermagem que desejam
+                dominar protocolos de segurança do paciente na prática.
+              </p>
+              <ul className="mt-7 space-y-3">
+                {[
+                  "Cenários com múltiplos desfechos baseados em evidências",
+                  "Feedback inteligente conduzido pela agente InterAtiva",
+                  "Certificação e metodologia validada em ambiente universitário",
+                ].map((item, i) => (
+                  <li key={i} className="flex items-start gap-3 text-sm text-slate-300">
+                    <BookOpenCheck className="mt-0.5 h-4.5 w-4.5 h-5 w-5 shrink-0 text-[#00FF66]" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <a
+                href={COURSE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group mt-9 inline-flex items-center gap-2.5 rounded-full bg-[#00FF66] px-8 py-4 text-sm font-bold text-[#03141A] transition-all hover:scale-[1.03] hover:shadow-[0_0_44px_rgba(0,255,102,0.5)]"
+              >
+                <GraduationCap className="h-5 w-5" />
+                Inscrever-se Agora
+                <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+              <p className="mt-3 text-xs text-slate-500">
+                inscricoes.ufsc.br/cursosimulacao
+              </p>
+            </div>
+
+            <div className="relative hidden items-center justify-center border-l border-white/5 bg-[#03141A]/40 p-12 lg:col-span-2 lg:flex">
+              <div className="grid-bg absolute inset-0 opacity-60" />
+              <div className="relative flex flex-col items-center gap-6">
+                <div className="pulse-ring relative flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-[#00F0FF] to-[#00FF66] shadow-[0_0_60px_rgba(0,240,255,0.4)]">
+                  <Bot className="h-14 w-14 text-[#03141A]" strokeWidth={1.8} />
+                </div>
+                <div className="text-center">
+                  <p className="text-lg font-bold text-white">Agente InterAtiva</p>
+                  <p className="mt-1 flex items-center justify-center gap-1.5 text-xs text-[#00FF66]">
+                    <span className="blink-dot h-1.5 w-1.5 rounded-full bg-[#00FF66]" />
+                    Guiando suas simulações em tempo real
+                  </p>
+                </div>
+                <button
+                  onClick={() => setChatOpen(true)}
+                  className="flex items-center gap-2 rounded-full border border-[#00F0FF]/40 bg-[#00F0FF]/10 px-6 py-2.5 text-sm font-semibold text-[#00F0FF] transition-all hover:bg-[#00F0FF]/20 hover:shadow-[0_0_28px_rgba(0,240,255,0.4)]"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                  Iniciar conversa
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ══════════ COORDENAÇÃO ══════════ */}
+      <section id="equipe" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+        <div className="grid items-center gap-10 lg:grid-cols-2">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-[0.25em] text-[#00FF66]">
+              Coordenação
+            </span>
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+              Liderança científica com{" "}
+              <span className="text-[#00F0FF]">propósito assistencial</span>
+            </h2>
+            <p className="mt-5 text-base leading-relaxed text-slate-400">
+              O projeto é coordenado no Departamento de Enfermagem da UFSC, em articulação com o
+              Hospital Universitário, integrando ensino, pesquisa e extensão para gerar impacto
+              real na qualidade e na segurança do cuidado.
+            </p>
+          </div>
+
+          <div className="group relative overflow-hidden rounded-2xl border border-white/10 bg-[#0B2028]/60 p-8 backdrop-blur-md transition-all hover:border-[#00F0FF]/40 hover:shadow-[0_0_40px_rgba(0,240,255,0.15)]">
+            <div className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-[#
