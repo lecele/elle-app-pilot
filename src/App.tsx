@@ -400,5 +400,141 @@ export default function InterAtivaLanding() {
                   Departamento de Enfermagem · Universidade Federal de Santa Catarina
                 </p>
                 <a
+
+                <a
                   href={LINKS.emailCoord}
-                  className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[#00F0FF]/30
+                  className="mt-4 inline-flex items-center gap-2 rounded-lg border border-[#00F0FF]/30 bg-[#00F0FF]/[0.06] px-4 py-2 text-xs font-semibold text-[#00F0FF] transition hover:bg-[#00F0FF]/15"
+                >
+                  <Mail className="h-4 w-4" />
+                  a.graziela@ufsc.br
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ===== Parcerias ===== */}
+        <section id="parcerias" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#00F0FF]">Nossas Parcerias</p>
+            <h2 className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">Instituições e Apoio</h2>
+            <p className="mt-4 text-slate-400">
+              Trabalhamos em conjunto com entidades de referência no ensino e fomento científico para consolidar simulações que transformam a saúde.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 items-center">
+            {[
+              { name: "UFSC", label: "Universidade Federal de Santa Catarina" },
+              { name: "PEN/UFSC", label: "Programa de Pós-Graduação em Enfermagem" },
+              { name: "Hospital Universitário", label: "HU / UFSC" },
+              { name: "FAPESC", label: "Fomento à Pesquisa e Inovação SC" }
+            ].map((p) => (
+              <div key={p.name} className={`${glass} p-8 flex flex-col items-center justify-center text-center h-40`}>
+                <Building2 className="h-10 w-10 text-[#00F0FF]/80 mb-3" />
+                <span className="font-bold text-white tracking-wide">{p.name}</span>
+                <span className="text-[10px] text-slate-400 mt-1">{p.label}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ===== Contato ===== */}
+        <section id="contato" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8 border-t border-white/5">
+          <div className="grid gap-12 lg:grid-cols-2">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#00F0FF]">Fale Conosco</p>
+              <h2 className="mt-3 text-3xl font-extrabold text-white sm:text-4xl">Entre em contato com nossa equipe</h2>
+              <p className="mt-4 text-slate-400">
+                Tem dúvidas sobre o projeto, interesse em implantar as simulações ou sugestões? Nossa coordenação e suporte estão prontos para atender.
+              </p>
+              <div className="mt-8 space-y-4">
+                <a href={LINKS.emailProjeto} className="flex items-center gap-3 text-slate-300 hover:text-[#00F0FF] transition">
+                  <Mail className="h-5 w-5 text-[#00FF66]" />
+                  <span>simulacaointerativa@gmail.com</span>
+                </a>
+                <a href={LINKS.igProjeto} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-slate-300 hover:text-[#00F0FF] transition">
+                  <Instagram className="h-5 w-5 text-[#00F0FF]" />
+                  <span>@simulacaointerativa</span>
+                </a>
+              </div>
+            </div>
+            <div className={`${glass} p-8`}>
+              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase mb-2">Seu Nome</label>
+                  <input type="text" className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00F0FF]/50" placeholder="Nome completo" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase mb-2">Seu E-mail</label>
+                  <input type="email" className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00F0FF]/50" placeholder="seuemail@exemplo.com" />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-400 uppercase mb-2">Mensagem</label>
+                  <textarea rows={4} className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-[#00F0FF]/50" placeholder="Sua mensagem..." />
+                </div>
+                <button type="submit" className="w-full bg-gradient-to-r from-[#00F0FF] to-[#00FF66] text-[#03141A] font-bold py-3.5 rounded-xl shadow-lg hover:brightness-110 transition">
+                  Enviar Mensagem
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* ===== Footer ===== */}
+      <footer className="border-t border-white/5 bg-[#020e12] py-12 text-slate-400">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div>
+            <p className="text-sm font-bold text-white tracking-wide">Inter<span className="text-[#00F0FF]">Ativa</span></p>
+            <p className="text-xs text-slate-500 mt-1">© 2026 Projeto InterAtiva UFSC. Todos os direitos reservados.</p>
+          </div>
+          <div className="flex gap-4">
+            <a href={LINKS.igProjeto} target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition">
+              <Instagram className="h-5 w-5" />
+            </a>
+          </div>
+        </div>
+      </footer>
+
+      {/* ===== Floating Assistant Button ===== */}
+      <div className="fixed bottom-6 right-6 z-50">
+        {!chatOpen ? (
+          <button
+            onClick={() => setChatOpen(true)}
+            className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-[#00F0FF] to-[#00FF66] text-[#03141A] shadow-[0_0_30px_rgba(0,240,255,0.4)] transition-all duration-300 hover:scale-110 hover:shadow-[0_0_40px_rgba(0,240,255,0.6)]"
+            aria-label="Falar com a assistente"
+          >
+            <Bot className="h-6 w-6 animate-pulse" />
+          </button>
+        ) : (
+          <div className="relative flex h-[550px] w-[400px] flex-col overflow-hidden rounded-2xl border border-white/10 bg-[#0B2028]/95 shadow-[0_0_50px_rgba(0,0,0,0.5)] backdrop-blur-xl transition-all duration-300">
+            {/* Header */}
+            <div className="flex items-center justify-between border-b border-white/5 bg-[#03141A]/50 px-4 py-3">
+              <div className="flex items-center gap-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#00F0FF]/15">
+                  <Bot className="h-5 w-5 text-[#00F0FF]" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-white">Assistente InterAtiva 2.0</p>
+                  <p className="text-[9px] uppercase tracking-wider text-[#00FF66]">Online</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setChatOpen(false)}
+                className="rounded-lg p-1 text-slate-400 hover:bg-white/5 hover:text-white"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            {/* Iframe */}
+            <iframe
+              src={LINKS.assistente}
+              className="w-full flex-1 border-none bg-transparent"
+              title="Chat InterAtiva"
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
